@@ -16,18 +16,28 @@
 #
 import webapp2, jinja2, os, logging
 
+import settings
+
 jinja_environment = jinja2.Environment(loader=
 	jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
-YO_API_TOKEN = ''
-YO_URL = "http://api.justyo.co/yo/"
-
+YO_TOKEN = settings.YO_API_TOKEN
+URL = settings.YO_URL
+TIMEZONE_TOKEN = settings.TIMEZONE_API_TOKEN
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         template_values = {}
         template = jinja_environment.get_template('main.html')
         self.response.out.write(template.render(template_values))
+class YoHandler(webapp2.RequestHandler):
+	def get(self):
+		template_values = {}
+		username = self.request.get('username')
+		location = self.request.get('location')
+		latitude = location.split(';')[0]
+		longitude = location.split(';')[1]
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/yo', YoHandler),
 ], debug=True)
