@@ -14,21 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import webapp2, jinja2, os, logging, urllib2, urllib, json
+import webapp2, jinja2, os, logging, urllib2, urllib, json, time
 
 from settings import *
 
 from google.appengine.api import urlfetch
+from datetime import datetime
 
 jinja_environment = jinja2.Environment(loader=
-	jinja2.FileSystemLoader(os.path.dirname(__file__)))
+    jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 YO_TOKEN = YO_API_TOKEN
 TIMEZONE_KEY = TIMEZONE_API_KEY
 
 YO_URL = "http://dev.justyo.co"
 
-timestamp = "1420009914"
+timestamp = str(datetime.now())
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -37,25 +38,18 @@ class MainHandler(webapp2.RequestHandler):
         self.response.out.write(template.render(template_values))
 
 class YoHandler(webapp2.RequestHandler):
-	def get(self):
-		username = "CHIVAS604"
-		location = "42.360091;-71.094159"
-		url = "https://maps.googleapis.com/maps/api/timezone/json?"
-		temp = list(location)
-		index = location.index(';')
-		temp[index] = ","
-		location = "".join(temp)
-		parameters = [
-			("location",location),
-			("timestamp",timestamp)
-		]
-		form_data = urllib.urlencode(parameters)
-		response = urlfetch.fetch(url=url,
-			payload=form_data,
-			method=urlfetch.POST
-		).content
-		logging.info(response)
-		json_data = json.loads(response)
+    def get(self):
+        username = "CHIVAS604"
+        location = "29.9053540;-95.6547160"
+        temp = list(location)
+        index = location.index(';')
+        temp[index] = ","
+        location = "".join(temp)
+        url = "https://maps.googleapis.com/maps/api/timezone/json?location="+location+"&timestamp="+timestamp+"&key="+TIMEZONE_KEY
+        response = urlfetch.fetch(url=url)
+        logging.info(response.content)
+        # json_data = json.loads(response.content)
+        # current_time = int(json_data["dstOffset"])+int(json_data["rawOffset"])+int(timestamp)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
