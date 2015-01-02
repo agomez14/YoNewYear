@@ -35,12 +35,12 @@ class MainHandler(webapp2.RequestHandler):
 class TimezoneHandler(webapp2.RequestHandler):
     def get(self):
         # *FOR LIVE DEPLOYMENT*
-        location = self.request.get("location")
-        username = self.request.get("username")
+        # location = self.request.get("location")
+        # username = self.request.get("username")
  
         # *FOR USE ON LOCAL MACHINE*
-        # location = "51.5033630;-0.1276250"
-        # username = YO_USERNAME
+        location = "51.5033630;-0.1276250"
+        username = YO_USERNAME
 
         temp = list(location)
         index = location.index(';')
@@ -63,7 +63,9 @@ class YoHandler(webapp2.RequestHandler):
         current_time = self.request.get("currenttime")
         link = "http://newyearyoapp.appspot.com/link?location="+location+"&currenttime="+str(current_time)
         values = {'api_token':YO_API_TOKEN, 'username':username, 'link':link}
-        response = urlfetch.fetch(url=YO_URL,payload=values)
+        data = urllib.urlencode(values)
+        req = urllib2.Request(YO_URL,data)
+        response = urllib2.urlopen(req)
 
 class LinkHandler(webapp2.RequestHandler):
     def get(self):
