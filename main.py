@@ -35,12 +35,12 @@ class MainHandler(webapp2.RequestHandler):
 class TimezoneHandler(webapp2.RequestHandler):
     def get(self):
         # *FOR LIVE DEPLOYMENT*
-        # location = self.request.get("location")
-        # username = self.request.get("username")
+        location = self.request.get("location")
+        username = self.request.get("username")
  
         # *FOR USE ON LOCAL MACHINE*
-        location = "51.5033630;-0.1276250"
-        username = YO_USERNAME
+        # location = "51.5033630;-0.1276250"
+        # username = YO_USERNAME
 
         temp = list(location)
         index = location.index(';')
