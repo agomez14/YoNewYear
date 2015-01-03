@@ -66,15 +66,12 @@ class YoHandler(webapp2.RequestHandler):
         data = urllib.urlencode(values)
         req = urllib2.Request(YO_URL,data)
         response = urllib2.urlopen(req)
+        self.redirect("/link?currenttime="+str(current_time))
 
 class LinkHandler(webapp2.RequestHandler):
     def get(self):
-        location = self.request.get("location")
         current_time = self.request.get("currenttime")
-        template_values = {
-            "location":location,
-            "currenttime":current_time
-        }
+        template_values = {}
         template = jinja_environment.get_template('user.html')
         self.response.out.write(template.render(template_values))
 

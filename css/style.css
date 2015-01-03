@@ -2,9 +2,14 @@ body{
 	background-color: #9B59B6;
 }
 h1{
-	color: white;
+	color: #F1C40F;
 	font-family: 'Montserrat', sans-serif;
 }
 .description{
 	font-size: 24px;
+	color: white;
+}
+
+h2{
+	color: white;
 }
